@@ -24,7 +24,8 @@ icon = nihongo_app/resources/akira_logo.png
 packages = Nuitka==4.1.1
 
 # buildozer = for deploying Android application
-android_packages = buildozer==1.6.0,cython==0.29.33
+# left unpinned so the PySide6 6.12 toolchain selects compatible versions
+android_packages = buildozer,cython
 
 [qt]
 

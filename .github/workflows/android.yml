@@ -1,0 +1,153 @@
+name: 🤖 Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "main.py"
+      - "nihongo_app/**"
+      - "pysidedeploy.spec"
+      - ".github/workflows/android.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    name: Build aarch64 APK (PySide6 ${{ env.PYSIDE_VERSION }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      PYSIDE_VERSION: "6.12.0"
+      WHEEL_TAG: "cp310-abi3"
+      TARGET_ARCH: "aarch64"
+      APK_ARTIFACT: akira-nihongo-apk-aarch64
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          df -h .
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential clang cmake git libssl-dev llvm unzip wget zip
+          java -version
+
+      - name: Install Python build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "PySide6==$PYSIDE_VERSION" buildozer cython
+          REQ="$(python -c 'from pathlib import Path; import PySide6; print(Path(PySide6.__file__).resolve().parent / "scripts" / "requirements-android.txt")')"
+          echo "Installing additional requirements from $REQ"
+          python -m pip install -r "$REQ"
+
+      - name: Download Android SDK + NDK (Qt helper)
+        run: |
+          git clone --depth 1 --branch "v$PYSIDE_VERSION" \
+            https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup 2>/dev/null \
+            || git clone --depth 1 --branch "$PYSIDE_VERSION" \
+            https://code.qt.io/pyside/pyside-setup.git /tmp/pyside-setup
+          python -m pip install -r /tmp/pyside-setup/requirements.txt
+          python -m pip install -r /tmp/pyside-setup/tools/cross_compile_android/requirements.txt
+          python /tmp/pyside-setup/tools/cross_compile_android/main.py \
+            --download-only --auto-accept-license --skip-update
+
+      - name: Locate cached NDK and SDK
+        run: |
+          NDK="$(find "$HOME" -maxdepth 6 -type d -name 'android-ndk-r28c' -print -quit)"
+          SDK="$(find "$HOME" -maxdepth 6 -type d -name 'android-sdk' -print -quit)"
+          echo "NDK=$NDK"
+          echo "SDK=$SDK"
+          test -n "$NDK" && test -d "$NDK"
+          test -n "$SDK" && test -d "$SDK"
+          echo "AND_NDK_PATH=$NDK" >> "$GITHUB_ENV"
+          echo "AND_SDK_PATH=$SDK" >> "$GITHUB_ENV"
+
+      - name: Download PySide6 / Shiboken6 Android wheels
+        run: |
+          mkdir -p android-wheels
+          curl -fL --retry 3 \
+            "https://download.qt.io/official_releases/QtForPython/pyside6/pyside6-$PYSIDE_VERSION-$PYSIDE_VERSION-$WHEEL_TAG-android_$TARGET_ARCH.whl" \
+            -o "android-wheels/pyside6-$WHEEL_TAG-android_$TARGET_ARCH.whl"
+          curl -fL --retry 3 \
+            "https://download.qt.io/official_releases/QtForPython/shiboken6/shiboken6-$PYSIDE_VERSION-$PYSIDE_VERSION-$WHEEL_TAG-android_$TARGET_ARCH.whl" \
+            -o "android-wheels/shiboken6-$WHEEL_TAG-android_$TARGET_ARCH.whl"
+          ls -lh android-wheels
+
+      - name: Make optional TTS import dynamic for Android
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("nihongo_app/ui/speech.py")
+          source = path.read_text(encoding="utf-8")
+          old = "    from PySide6.QtTextToSpeech import QTextToSpeech\n"
+          new = ("    from importlib import import_module\n"
+                 "    QTextToSpeech = import_module('PySide6.QtTextToSpeech').QTextToSpeech\n")
+          if old in source:
+              path.write_text(source.replace(old, new), encoding="utf-8")
+              print("Optional QtTextToSpeech import made dynamic (not bundled on Android).")
+          else:
+              print("Optional QtTextToSpeech import already dynamic.")
+          PY
+
+      - name: Build APK with pyside6-android-deploy
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          pyside6-android-deploy \
+            --force \
+            --verbose \
+            --wheel-pyside="$PWD/android-wheels/pyside6-$WHEEL_TAG-android_$TARGET_ARCH.whl" \
+            --wheel-shiboken="$PWD/android-wheels/shiboken6-$WHEEL_TAG-android_$TARGET_ARCH.whl" \
+            --ndk-path="$AND_NDK_PATH" \
+            --sdk-path="$AND_SDK_PATH" \
+            --name=AkiraNihongo
+
+      - name: Collect APK
+        run: |
+          mkdir -p dist/android
+          echo "APK files found:"
+          find "$PWD" -name '*.apk' -type f -print
+          find "$PWD" -name '*.apk' -type f -exec cp -f {} dist/android/ \;
+          ls -lh dist/android
+          test -n "$(find dist/android -name '*.apk' -type f -print -quit)"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APK_ARTIFACT }}
+          path: dist/android/*.apk
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Attach APK to release v1.2.0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for apk in dist/android/*.apk; do
+            echo "Uploading $apk to release v1.2.0"
+            gh release upload v1.2.0 "$apk" --repo "$GITHUB_REPOSITORY" --clobber
+          done
