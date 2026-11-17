@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   build-apk:
-    name: Build aarch64 APK (PySide6 ${{ env.PYSIDE_VERSION }})
+    name: Build aarch64 APK
     runs-on: ubuntu-24.04
     timeout-minutes: 240
     env:
