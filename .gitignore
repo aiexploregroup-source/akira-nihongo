@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# PyInstaller / pyside6-deploy
+build/
+dist/
+*.manifest
+*.pkg
+AkiraNihongo.dist/
+AkiraNihongo.build/
+*.onefile-build/
+
+# Android / Buildozer
+.buildozer/
+bin/
+.pyside6-android-deploy/
+local.properties
+buildozer.spec.bak
+
+# Local app data / secrets
+*.sqlite3
+*.db
+*.log
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
