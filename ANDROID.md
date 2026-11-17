@@ -1,8 +1,13 @@
 # 🤖 Building the Android APK
 
-> **Status:** the repository is **source-ready** for Android. A prebuilt APK is intentionally
-> not committed (binaries do not belong in Git, and APKs must be built against a pinned Qt
-> toolchain). This guide produces a real, installable PySide6 APK.
+> **Status:** a real, installable ARM64 debug APK is built and attached to the
+> [**v1.2.0 release**](https://github.com/aiexploregroup-source/akira-nihongo/releases/tag/v1.2.0)
+> as `AkiraNihongo-0.1-arm64-v8a-debug.apk` (SHA-256
+> `6392f4330febaa49bb4603a00adb4bed1c3bef45236a176c57cfcdfed6f5f5b7`). It is not committed to Git
+> because at ~163 MB it exceeds GitHub's 100 MB per-file limit — release assets are the correct home
+> for a binary this size. The [Android build workflow](.github/workflows/android.yml) rebuilds it
+> automatically on an Ubuntu runner using the exact pinned toolchain described below. This guide
+> lets you reproduce that build locally.
 
 ---
 

@@ -10,7 +10,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![PySide6](https://img.shields.io/badge/GUI-PySide6%206%2B-41CD52?logo=qt&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Windows%20·%20Linux%20·%20Android%20source-6C4AB6)
+![Platform](https://img.shields.io/badge/Platform-Windows%20·%20Linux%20·%20Android%20APK-6C4AB6)
 ![Curriculum](https://img.shields.io/badge/Curriculum-GENKI%20I%20→%20N5-E64845)
 ![Vocabulary](https://img.shields.io/badge/Vocabulary-568%20items-0F9D58)
 ![Grammar](https://img.shields.io/badge/Grammar-81%20points-1E88E5)
@@ -80,7 +80,7 @@ clear *current mission*; everything else stays folded until you are ready for it
 ### Run from source
 
 ```powershell
-git clone https://github.com/your-username/akira-nihongo.git
+git clone https://github.com/aiexploregroup-source/akira-nihongo.git
 cd akira-nihongo
 pip install -r requirements.txt
 python main.py
@@ -201,20 +201,23 @@ read from the same local SQLite file.
 .\dist\AkiraNihongo.exe
 ```
 
-### 🤖 Android — APK build configuration
+### 🤖 Android — installable APK
 
-> **Status: source-ready, not pre-built.** PySide6 APKs must be compiled on a **Linux host**
-> with `pyside6-android-deploy` + Buildozer (NDK r28c, JDK 17+). This repository ships the
-> complete `pysidedeploy.spec` and a step-by-step guide — see **[ANDROID.md](ANDROID.md)**.
+**Prebuilt debug APK** (ARM64 / `arm64-v8a`, for physical phones and tablets):
 
-```bash
-# On Linux / WSL Ubuntu, after the one-time toolchain setup:
-pyside6-android-deploy --config-file pysidedeploy.spec
-# Debug APK → bin/akiranihongo-debug.apk
-```
+> [⬇️ Download AkiraNihongo-0.1-arm64-v8a-debug.apk](https://github.com/aiexploregroup-source/akira-nihongo/releases/download/v1.2.0/AkiraNihongo-0.1-arm64-v8a-debug.apk)
+>
+> SHA-256: `6392f4330febaa49bb4603a00adb4bed1c3bef45236a176c57cfcdfed6f5f5b7`
+> (see the adjacent `.sha256` checksum on the [v1.2.0 release](https://github.com/aiexploregroup-source/akira-nihongo/releases/tag/v1.2.0)).
 
-The app already degrades gracefully when platform modules such as text-to-speech are unavailable,
-so the core curriculum, decks and quizzes remain fully functional on device.
+Install with `adb install AkiraNihongo-0.1-arm64-v8a-debug.apk`, or open the file on the device and
+allow installation of unknown sources. The APK bundles the full Qt 6.12 runtime, Python 3.14 and
+the entire curriculum — it works offline. The app degrades gracefully when platform modules such as
+text-to-speech are unavailable, so the core curriculum, decks and quizzes remain fully functional.
+
+The APK is built automatically on a Linux runner by the
+[Android build workflow](.github/workflows/android.yml) using `pyside6-android-deploy` + Buildozer
+(NDK r28c, JDK 17+). To rebuild it yourself, follow **[ANDROID.md](ANDROID.md)**.
 
 ---
 

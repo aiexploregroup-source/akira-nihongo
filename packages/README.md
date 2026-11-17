@@ -5,7 +5,7 @@ This folder holds ready-to-use builds of **AKIRA NIHONGO**.
 | Platform | Artifact | Status | Notes |
 |---|---|---|---|
 | 🪟 Windows | [`windows/AkiraNihongo.exe`](windows/AkiraNihongo.exe) | ✅ Ready | Single-file, v1.2.0, no install required |
-| 🤖 Android | — | 🛠️ Source-ready | Build with [`ANDROID.md`](../ANDROID.md) on a Linux host |
+| 🤖 Android | [`AkiraNihongo-0.1-arm64-v8a-debug.apk`](https://github.com/aiexploregroup-source/akira-nihongo/releases/download/v1.2.0/AkiraNihongo-0.1-arm64-v8a-debug.apk) | ✅ Ready | ARM64 debug APK on the v1.2.0 release (~163 MB) |
 
 ## Windows
 
@@ -25,10 +25,21 @@ Get-FileHash .\packages\windows\AkiraNihongo.exe -Algorithm SHA256
 
 ## Android
 
-A prebuilt APK is intentionally not committed. PySide6 Android packages must be compiled
-on a Linux/macOS host with `pyside6-android-deploy`, Buildozer, NDK r28c and JDK 17+.
-The repository ships the complete `pysidedeploy.spec`; follow **[ANDROID.md](../ANDROID.md)**
-to produce `bin/AkiraNihongo-debug.apk`.
+A real, installable ARM64 debug APK is attached to the
+[**v1.2.0 release**](https://github.com/aiexploregroup-source/akira-nihongo/releases/tag/v1.2.0)
+as `AkiraNihongo-0.1-arm64-v8a-debug.apk` (plus a `.sha256` checksum). It is not committed to Git
+because at ~163 MB it exceeds GitHub's 100 MB per-file limit — release assets are the correct home
+for a binary this size.
+
+```powershell
+# Install on a connected device via adb
+adb install AkiraNihongo-0.1-arm64-v8a-debug.apk
+```
+
+- Bundles Qt 6.12, Python 3.14 and the full curriculum — fully offline.
+- SHA-256: `6392f4330febaa49bb4603a00adb4bed1c3bef45236a176c57cfcdfed6f5f5b7`
+- To rebuild from source on Linux/macOS, follow **[ANDROID.md](../ANDROID.md)**; the
+  [Android build workflow](../.github/workflows/android.yml) automates the same toolchain on CI.
 
 ## Version
 
