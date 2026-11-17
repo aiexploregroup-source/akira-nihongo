@@ -183,6 +183,9 @@ AKIRA NIHONGO/
 
 ### 🪟 Windows — executable
 
+**Prebuilt:** [`packages/windows/AkiraNihongo.exe`](packages/windows/AkiraNihongo.exe) — single-file
+v1.2.0 build. Verify it with the adjacent `AkiraNihongo.exe.sha256` checksum.
+
 A ready-to-run build script is included:
 
 ```powershell
