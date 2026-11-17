@@ -23,7 +23,7 @@ PySide6 Android packaging is real, but it is **not a Windows-only workflow**:
 
 `ui/speech.py` wraps text-to-speech in `try/except`, so if that module is unavailable on
 Android the app still runs — only audio pronunciation is skipped. Everything else
-(curriculum, decks, quizzes, planner, progress) remains fully functional.
+(curriculum, decks, quizzes and progress) remains fully functional.
 
 ---
 
@@ -172,7 +172,7 @@ Test at minimum:
 2. Opening **Writing Foundations** shows centered, scrollable flashcards.
 3. Reveal + rate advances progress and marks the journey stop complete.
 4. The globe action switches Japanese ⇄ English and survives a restart.
-5. Dark theme toggle and the study planner still work.
+5. The dark theme toggle and the real-life module still work.
 
 ---
 

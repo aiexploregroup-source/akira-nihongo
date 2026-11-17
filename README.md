@@ -4,8 +4,7 @@
 
 > **AKIRA NIHONGO** is a premium, offline-first Japanese self-study app built around the
 > **GENKI I** first-year curriculum. It turns a complete syllabus into a single guided path:
-> one interactive flashcard at a time, with spaced repetition, real-life conversation modules,
-> and a planner that stays out of your way.
+> one interactive flashcard at a time, with spaced repetition and real-life conversation modules.
 
 ---
 
@@ -27,7 +26,7 @@
 flowchart LR
     A["🌱 はじまりの道<br/>Kana · Greetings · Numbers"] --> B["📘 前半<br/>Lessons 1–6"]
     B --> C["📗 後半<br/>Lessons 7–12"]
-    C --> D["🌳 実践の森<br/>Real life · Planner"]
+    C --> D["🌳 実践の森<br/>Real-life Japanese"]
     D --> E("🎯 JLPT N5")
 
     style A fill:#F6E7C6,stroke:#B8860B,color:#2B2118
@@ -47,9 +46,9 @@ clear *current mission*; everything else stays folded until you are ready for it
 | Principle | What you get |
 |---|---|
 | 🃏 **Flashcard-first** | Every teaching page is a fully interactive card deck — reveal, listen, rate recall, shuffle, navigate. No static tables or walls of text. |
-| 🧭 **Journey-first** | A windowed path of 17 stops across four chapters, with explicit completion and a living "current mission". |
+| 🧭 **Journey-first** | A windowed path of 16 stops across four chapters, with explicit completion and a living "current mission". |
 | 🧠 **Spaced repetition** | SM-2 scheduling remembers the hard cards and spaces out the easy ones. |
-| 🗣️ **Real Japanese** | 16 scenario modules take you from self-introductions to shopping, travel, health and etiquette. |
+| 🗣️ **Real Japanese** | 15 scenario modules take you from self-introductions to shopping, travel, health and etiquette. |
 | 🌐 **Two UI languages** | Switch Japanese ⇄ English from the menu bar; your choice is saved for every launch. Study content always stays in Japanese. |
 | 🔒 **Private by default** | Everything runs locally. Progress lives in a SQLite file on your machine — no account, no telemetry. |
 | 🎨 **Premium identity** | Pure-vector brush crest, warm gold/ink palette, bundled Inter + Noto Sans JP fonts, and a logo-only cinematic intro. |
@@ -66,8 +65,8 @@ clear *current mission*; everything else stays folded until you are ready for it
 | Phrases & expressions | **421** | Greetings, numbers, useful language |
 | Kana characters | **236** | Hiragana, katakana, voiced, contracted, extended |
 | Lessons | **12** | GENKI I, each with vocab → grammar → culture → expressions |
-| Real-life modules | **16** | Practical conversation scenarios |
-| Journey levels | **17** | Four chapters from はじまりの道 to 実践の森 |
+| Real-life modules | **15** | Practical conversation scenarios |
+| Journey levels | **16** | Four chapters from はじまりの道 to 実践の森 |
 
 ---
 
@@ -152,7 +151,7 @@ AKIRA NIHONGO/
 │   └── ARCHITECTURE.md             # design notes and data model
 ├── nihongo_app/
 │   ├── core/
-│   │   ├── database.py             # SQLite progress, settings, journey stops, planner
+│   │   ├── database.py             # SQLite progress, settings, journey stops
 │   │   ├── models.py               # typed content records
 │   │   ├── quiz.py                 # question/deck generation
 │   │   └── srs.py                  # SM-2 scheduler
@@ -161,7 +160,7 @@ AKIRA NIHONGO/
 │   │   ├── intro.py                # greetings, bowing, numbers basics
 │   │   ├── lessons_a.py            # lessons 1–6
 │   │   ├── lessons_b.py            # lessons 7–12
-│   │   ├── real_life.py            # 16 scenario modules
+│   │   ├── real_life.py            # 15 scenario modules
 │   │   └── registry.py             # unified curriculum registry
 │   ├── resources/
 │   │   ├── akira_logo.svg          # pure-vector emblem (no lettering)
@@ -212,7 +211,7 @@ pyside6-android-deploy --config-file pysidedeploy.spec
 ```
 
 The app already degrades gracefully when platform modules such as text-to-speech are unavailable,
-so the core curriculum, decks, quizzes and planner remain fully functional on device.
+so the core curriculum, decks and quizzes remain fully functional on device.
 
 ---
 
@@ -224,8 +223,7 @@ Progress is stored locally at:
 %USERPROFILE%\.nihongo_sensei\progress.sqlite3
 ```
 
-That includes lesson completion, journey stops, SRS reviews, streaks, planner tasks, theme, and
-language choice. **Settings → Export** writes a JSON backup; **Reset** clears it. Nothing is
+That includes lesson completion, journey stops, SRS reviews, streaks, theme, and language choice. **Settings → Export** writes a JSON backup; **Reset** clears it. Nothing is
 uploaded.
 
 ---

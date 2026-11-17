@@ -43,7 +43,6 @@ STOP_DESCRIPTIONS = {
     "greetings": "まずは挨拶とおじぎ。日本語の第一歩です。",
     "numbers": "数・時間・日付に馴染んで、会話の幅を広げます。",
     "real-life": "習った言葉を、日常の場面で使ってみましょう。",
-    "planner": "自分らしい学習計画を立てて、旅を続けます。",
 }
 
 
@@ -90,7 +89,7 @@ CHAPTERS: tuple[Chapter, ...] = (
         title="実践の森",
         subtitle="使える日本語へ",
         icon="✦",
-        stops=(_make_stop("real-life"), _make_stop("planner")),
+        stops=(_make_stop("real-life"),),
     ),
 )
 

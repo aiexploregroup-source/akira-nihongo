@@ -26,7 +26,7 @@ def main() -> int:
     app = QApplication(sys.argv)
     app.setApplicationName("あきら にほんご")
     app.setOrganizationName("Akira Nihongo")
-    app.setApplicationVersion("1.1.0")
+    app.setApplicationVersion("1.2.0")
     app.setWindowIcon(logo_pixmap(256))
 
     load_application_fonts()

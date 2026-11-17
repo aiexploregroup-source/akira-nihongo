@@ -89,7 +89,6 @@ JA_EN: dict[str, str] = {
     "あいさつ": "Greetings",
     "すうじ": "Numbers & Time",
     "実践日本語": "Real-Life Japanese",
-    "勉強計画": "Study Planner",
     "文字の練習": "Kana Practice",
     "フラッシュカード": "Flashcards",
     "クイズ": "Quiz",
@@ -130,8 +129,6 @@ JA_EN: dict[str, str] = {
         "Get comfortable with numbers, time and dates to widen your conversation.",
     "習った言葉を、日常の場面で使ってみましょう。":
         "Try using what you have learned in everyday situations.",
-    "自分らしい学習計画を立てて、旅を続けます。":
-        "Build a study plan that suits you and keep the journey going.",
     "語彙・文法・文化をミッションずつ学びます。":
         "Learn vocabulary, grammar and culture one mission at a time.",
     "次の一歩を踏み出しましょう。": "Take your next step.",
@@ -207,8 +204,8 @@ JA_EN: dict[str, str] = {
     "学習記録を保存": "Save study record",
     "学習記録をエクスポートしました。": "Study record exported.",
     "確認": "Confirm",
-    "すべての学習記録、レビュー履歴、勉強計画を削除しますか？":
-        "Delete all study records, review history and study plans?",
+    "すべての学習記録とレビュー履歴を削除しますか？":
+        "Delete all study records and review history?",
     "学習記録をリセットしました。": "Study record reset.",
     "はい": "Yes",
     "いいえ": "No",
@@ -257,18 +254,6 @@ JA_EN: dict[str, str] = {
     "ひらがな": "Hiragana",
     "カタカナ": "Katakana",
 
-    # planner page
-    "日本語で自分の学習計画を立てましょう。毎日の小さな目標が、N5 への近道です。":
-        "Build your own study plan. Small daily goals are the fastest route to N5.",
-    "予定を追加": "Add task",
-    "メモ · Note": "Note",
-    "テンプレート · Presets": "Presets",
-    "今週の計画": "This week's plan",
-    "まだ予定がありません。左のフォームから追加しましょう。":
-        "No tasks yet. Add one using the form on the left.",
-    "＋  予定を追加する": "+  Add task",
-    "✦  毎日の基本（7日分）": "✦  Daily basics (7 days)",
-    "✦  試験対策ウィーク（7日分）": "✦  Exam prep week (7 days)",
     "日本語": "Japanese",
     "復習": "Review",
     "予習": "Preview",
@@ -290,9 +275,9 @@ JA_EN: dict[str, str] = {
     "リスニング": "Listening",
 
     # settings coverage line
-    "対応範囲：ひらがな・カタカナ・漢字基礎 / greetings / numbers /  Lessons 1–12 / 実践会話 / 勉強計画":
+    "対応範囲：ひらがな・カタカナ・漢字基礎 / greetings / numbers /  Lessons 1–12 / 実践会話":
         "Coverage: Hiragana / Katakana / basic Kanji / Greetings / Numbers / "
-        "Lessons 1–12 / Real-life conversation / Study planner",
+        "Lessons 1–12 / Real-life conversation",
 
     # practice session messages
     "この文字は？": "What is this character?",
@@ -351,10 +336,6 @@ _PATTERNS: list[tuple[re.Pattern[str], Any]] = [
      lambda m: f"{m.group(1)} / {m.group(2)} correct\n{m.group(3)}"),
     (re.compile(r"^(\d+) 表現 · (\d+) コツ$"),
      lambda m: f"{m.group(1)} phrases · {m.group(2)} tips"),
-    (re.compile(r"(?s)^予定 (\d+) 件のうち (\d+) 件を達成しました。\s*学習時間：合計 (\d+) 分 / 達成 (\d+) 分。\s*毎日少しずつ、確実に進みましょう。$"),
-     lambda m: (f"{m.group(2)} of {m.group(1)} tasks completed.\n"
-                f"Study time: {m.group(4)} / {m.group(3)} min.\n"
-                "Keep making steady progress, little by little.")),
     (re.compile(r"^文化ノート (\d+)$"), lambda m: f"Culture note {m.group(1)}"),
     (re.compile(r"^コツ (\d+)$"), lambda m: f"Tip {m.group(1)}"),
     (re.compile(r"^おじぎ (\d+)$"), lambda m: f"Bowing {m.group(1)}"),

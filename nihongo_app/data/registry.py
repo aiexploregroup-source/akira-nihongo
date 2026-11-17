@@ -69,7 +69,6 @@ for _lesson in ALL_LESSONS:
     ))
 
 LEVELS.append(Level("real-life", "実践日本語", "Real-Life Japanese", "✦", "STAGE 14 · APPLY", "real_life"))
-LEVELS.append(Level("planner", "勉強計画", "Study Planner", "▦", "STAGE 14 · APPLY", "planner"))
 
 LEVEL_BY_KEY = {level.key: level for level in LEVELS}
 

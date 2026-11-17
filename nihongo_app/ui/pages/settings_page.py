@@ -98,13 +98,13 @@ class SettingsPage(Page):
         info.add(QLabel(f"文法ポイント：{len(ALL_GRAMMAR)}"))
         info.add(QLabel(f"実用例・表現：{len(ALL_PHRASES)}"))
         info.add(QLabel("対応範囲：ひらがな・カタカナ・漢字基礎 / greetings / numbers / "
-                        " Lessons 1–12 / 実践会話 / 勉強計画"))
+                        " Lessons 1–12 / 実践会話"))
         about.add(info)
         shortcuts = QLabel(
             "ショートカット：Ctrl+K で検索 · 左のナビゲーションで各ページへ移動")
         shortcuts.setObjectName("caption")
         about.add(shortcuts)
-        about.add(pill("Version 1.1.0", "gold"))
+        about.add(pill("Version 1.2.0", "gold"))
         grid.addWidget(about)
         grid.addStretch(1)
 
@@ -138,14 +138,13 @@ class SettingsPage(Page):
             },
             "activity": [dict(r) for r in self.db.conn.execute("SELECT * FROM activity")],
             "lessons": [dict(r) for r in self.db.conn.execute("SELECT * FROM lessons")],
-            "planner": self.db.tasks(),
         }
         Path(path).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         QMessageBox.information(self, tr("完了"), tr("学習記録をエクスポートしました。"))
 
     def _reset(self) -> None:
         answer = QMessageBox.question(
-            self, tr("確認"), tr("すべての学習記録、レビュー履歴、勉強計画を削除しますか？"),
+            self, tr("確認"), tr("すべての学習記録とレビュー履歴を削除しますか？"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if answer == QMessageBox.StandardButton.Yes:
             self.db.reset_progress()

@@ -41,9 +41,8 @@ The `Database` class owns all persistence:
 | `lessons` | Explicit lesson completion keys |
 | `activity` | Daily reviewed / correct / minutes counters |
 | `reviews` | SM-2 card state (`ease`, `interval`, due date) |
-| `planner` | Study tasks with day, subject, minutes, note, done flag |
 | `settings` | Theme, interface language, journey stops, daily goal |
-| `journey_stops` (setting) | Non-lesson stops completed: `foundations`, `greetings`, `numbers`, `real-life`, `planner` |
+| `journey_stops` (setting) | Non-lesson stops completed: `foundations`, `greetings`, `numbers`, `real-life` |
 
 Progress helpers:
 

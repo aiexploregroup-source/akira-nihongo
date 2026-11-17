@@ -32,7 +32,6 @@ NAV_GROUPS: list[tuple[str, list[tuple[str, str, str]]]] = [
     ]),
     ("実践", [
         ("real_life", "✦", "実践日本語"),
-        ("planner", "▦", "勉強計画"),
     ]),
     ("練習", [
         ("kana_practice", "あ", "文字の練習"),
@@ -114,7 +113,6 @@ class MainWindow(QMainWindow):
             add(lessons, f"L{number} · {level.jp}", level.key)
         journey.addSeparator()
         add(journey, "実践日本語", "real_life")
-        add(journey, "勉強計画", "planner")
 
         practice = add_menu("練習")
         add(practice, "文字の練習", "kana_practice")
@@ -267,7 +265,7 @@ class MainWindow(QMainWindow):
             return self._pages[key]
         from .pages import (
             dashboard, foundations, greetings, numbers, lesson, real_life,
-            planner, kana_practice, flashcards, quiz, search_page, settings_page,
+            kana_practice, flashcards, quiz, search_page, settings_page,
         )
         mapping = {
             "dashboard": dashboard.DashboardPage,
@@ -275,7 +273,6 @@ class MainWindow(QMainWindow):
             "greetings": greetings.GreetingsPage,
             "numbers": numbers.NumbersPage,
             "real_life": real_life.RealLifePage,
-            "planner": planner.PlannerPage,
             "kana_practice": kana_practice.KanaPracticePage,
             "flashcards": flashcards.FlashcardsPage,
             "quiz": quiz.QuizPage,

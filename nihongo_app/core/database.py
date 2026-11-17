@@ -1,4 +1,4 @@
-"""SQLite persistence for progress, SRS, planner and settings."""
+"""SQLite persistence for progress, SRS and settings."""
 from __future__ import annotations
 
 import json
@@ -43,12 +43,6 @@ class Database:
                 CREATE TABLE IF NOT EXISTS activity (
                     day TEXT PRIMARY KEY, reviewed INTEGER NOT NULL DEFAULT 0,
                     correct INTEGER NOT NULL DEFAULT 0, minutes INTEGER NOT NULL DEFAULT 0
-                );
-                CREATE TABLE IF NOT EXISTS planner (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    day TEXT NOT NULL, subject TEXT NOT NULL, activity TEXT NOT NULL,
-                    minutes INTEGER NOT NULL DEFAULT 30, note TEXT NOT NULL DEFAULT '',
-                    done INTEGER NOT NULL DEFAULT 0
                 );
                 """
             )
@@ -187,38 +181,10 @@ class Database:
                         "correct": row["correct"] if row else 0})
         return out
 
-    # ---------- planner ----------
-    def add_task(self, day: str, subject: str, activity: str, minutes: int, note: str) -> None:
-        with self.conn:
-            self.conn.execute(
-                "INSERT INTO planner(day,subject,activity,minutes,note) VALUES(?,?,?,?,?)",
-                (day, subject, activity, minutes, note),
-            )
-
-    def tasks(self, start: str | None = None, end: str | None = None) -> list[dict[str, Any]]:
-        sql = "SELECT * FROM planner"
-        args: list[str] = []
-        if start and end:
-            sql += " WHERE day BETWEEN ? AND ?"
-            args = [start, end]
-        sql += " ORDER BY day, id"
-        return [dict(r) for r in self.conn.execute(sql, args)]
-
-    def toggle_task(self, task_id: int) -> None:
-        with self.conn:
-            self.conn.execute(
-                "UPDATE planner SET done = CASE done WHEN 1 THEN 0 ELSE 1 END WHERE id=?",
-                (task_id,),
-            )
-
-    def delete_task(self, task_id: int) -> None:
-        with self.conn:
-            self.conn.execute("DELETE FROM planner WHERE id=?", (task_id,))
-
     # ---------- maintenance ----------
     def reset_progress(self) -> None:
         with self.conn:
-            for table in ("reviews", "lessons", "activity", "planner"):
+            for table in ("reviews", "lessons", "activity"):
                 self.conn.execute(f"DELETE FROM {table}")
 
     def close(self) -> None:
