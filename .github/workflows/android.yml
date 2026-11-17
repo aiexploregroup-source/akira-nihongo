@@ -53,6 +53,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            autoconf automake libtool libtool-bin pkg-config libffi-dev libltdl-dev \
             build-essential clang cmake git libssl-dev llvm unzip wget zip
           java -version
 
